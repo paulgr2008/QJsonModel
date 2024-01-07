@@ -272,10 +272,8 @@ bool QJsonModel::load(QIODevice *device)
     return loadJson(device->readAll());
 }
 
-bool QJsonModel::loadJson(const QByteArray &json)
+bool QJsonModel::loadJson(const QJsonDocument& jdoc)
 {
-    auto const& jdoc = QJsonDocument::fromJson(json);
-
     if (!jdoc.isNull()) {
         beginResetModel();
         delete mRootItem;
@@ -293,6 +291,11 @@ bool QJsonModel::loadJson(const QByteArray &json)
 
     qDebug()<<Q_FUNC_INFO<<"cannot load json";
     return false;
+}
+
+bool QJsonModel::loadJson(const QByteArray &json)
+{
+    return loadJson(QJsonDocument::fromJson(json));
 }
 
 
